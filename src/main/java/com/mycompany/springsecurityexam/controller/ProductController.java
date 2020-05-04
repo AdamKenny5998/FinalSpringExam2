@@ -5,12 +5,15 @@
  */
 package com.mycompany.springsecurityexam.controller;
 
+import com.mycompany.springsecurityexam.model.Product;
 import com.mycompany.springsecurityexam.model.ProductService;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -33,10 +36,15 @@ public class ProductController {
         return new ModelAndView("/allProducts", "productList", service.getAllProducts());
     }
     
-    @RequestMapping("deleteProduct")
-    public ModelAndView addProduct(@PathVariable ("id") String id){
-        service.deleteAProduct(id);
-        return new ModelAndView("/viewAllProducts", "productList", service.getAllProducts());
+    @RequestMapping("/deleteProduct{code}")
+    public ModelAndView deleteProduct(@PathVariable ("code") String code){
+        service.deleteAProduct(code);
+        return new ModelAndView("/allProducts", "productList", service.getAllProducts());
+    }
+    
+    @GetMapping("/addProduct")
+    public ModelAndView displayAgentAddForm(){
+        return new ModelAndView("/addProduct", "product", new Product("","","",0.00,0.00,0));
     }
     
     

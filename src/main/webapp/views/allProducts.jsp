@@ -11,6 +11,9 @@
         <title>All Products</title>
     </head> 
     <body>
+        <security:authorize access="hasRole('SUPERADMIN')"><p>Welcome ${uname}, <a href="logout">Logout</a></p></security:authorize>
+        <security:authorize access="hasRole('ADMIN')"><p>Welcome ${uname},<a href="logout">Logout</a></p></security:authorize>
+        <security:authorize access="hasRole('USER')"><p>Welcome ${uname},<a href="logout">Logout</a></p></security:authorize>
         <table style="width:100%">
             <tr>
                 <th align="left">Code</th>
@@ -26,12 +29,13 @@
                     <td>${product.code}</td>
                     <td>${product.name}</td>
                     <td>${product.description}</td>
-                    <td>${product.buyPrice}</td>
-                    <td>${product.sellPrice}</td>
+                    <td><fmt:setLocale value="en_EUR"/>
+                        <fmt:formatNumber value="${product.buyPrice}" type="currency"/></td>
+                    <td><fmt:formatNumber value="${product.sellPrice}" type="currency"/></td>
                     <td>${product.quantityInStock}</td>
                     <td><security:authorize access="hasRole('SUPERADMIN')">
                             <a href="addProduct">Insert</a>
-                            <a href="deleteProduct?id=${product.id}">Delete</a>
+                            <a href="product/deleteProduct?code=${product.code}">Delete</a>
                         </security:authorize>
                         <security:authorize access="hasRole('ADMIN')">
                             <a href="addProduct">Insert</a>
